@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,18 @@ void main() async {
     // Continue anyway to show error in app
   }
   
-  runApp(const ParkitApp());
+  // Suppress verbose animate_do prints and start the app in a custom zone
+  runZonedGuarded(
+    () => runApp(const ParkitApp()),
+    (error, stack) => debugPrint('Unhandled error: $error'),
+    zoneSpecification: ZoneSpecification(
+      print: (self, parent, zone, message) {
+        if (!message.toString().startsWith('animate:')) {
+          parent.print(zone, message);
+        }
+      },
+    ),
+  );
 }
 
 class ParkitApp extends StatelessWidget {

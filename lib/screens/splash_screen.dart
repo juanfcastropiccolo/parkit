@@ -3,6 +3,7 @@ import 'package:animate_do/animate_do.dart';
 
 import '../config/app_theme.dart';
 import '../config/supabase_config.dart';
+import 'placeholder_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -70,6 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void _showPlaceholderMessage() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text('¡Bienvenido a Parkit!'),
         content: const Text(
@@ -79,7 +81,14 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => const PlaceholderScreen(),
+                ),
+              );
+            },
             child: const Text('Continuar'),
           ),
         ],

@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+  	<key>NSLocalNetworkUsageDescription</key>
+  	<string>Allows debugging connections to the local network for Flutter tools.</string>
+  	<key>NSBonjourServices</key>
+  	<array>
+  	  <string>_dartobservatory._tcp</string>
+  	</array>
 </dict>
 </plist>
