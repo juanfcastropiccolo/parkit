@@ -24,6 +24,7 @@ class AppTheme {
       // Configuración básica
       useMaterial3: true,
       brightness: Brightness.light,
+      scaffoldBackgroundColor: backgroundLight,
       
       // Esquema de colores
       colorScheme: const ColorScheme.light(
@@ -31,11 +32,9 @@ class AppTheme {
         secondary: primaryAzul,
         tertiary: accentCeleste,
         surface: surfaceColor,
-        background: backgroundLight,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: onSurfaceColor,
-        onBackground: onSurfaceColor,
         error: warningOrange,
       ),
 
@@ -145,7 +144,7 @@ class AppTheme {
           fontWeight: FontWeight.w500,
         ),
         hintStyle: TextStyle(
-          color: onSurfaceColor.withOpacity(0.6),
+          color: onSurfaceColor.withAlpha((0.6 * 255).round()),
           fontSize: 16,
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -155,7 +154,7 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: surfaceColor,
         elevation: 2,
-        shadowColor: onSurfaceColor.withOpacity(0.1),
+        shadowColor: onSurfaceColor.withAlpha((0.1 * 255).round()),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -185,7 +184,7 @@ class AppTheme {
 
       // Chip Theme
       chipTheme: ChipThemeData(
-        backgroundColor: accentCeleste.withOpacity(0.2),
+        backgroundColor: accentCeleste.withAlpha((0.2 * 255).round()),
         labelStyle: const TextStyle(
           color: primaryAzul,
           fontWeight: FontWeight.w500,
@@ -198,15 +197,15 @@ class AppTheme {
 
       // Switch Theme
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return primaryCeleste;
           }
           return Colors.grey[400];
         }),
-        trackColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
-            return primaryCeleste.withOpacity(0.5);
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return primaryCeleste.withAlpha((0.5 * 255).round());
           }
           return Colors.grey[300];
         }),
@@ -221,7 +220,7 @@ class AppTheme {
 
       // Divider Theme
       dividerTheme: DividerThemeData(
-        color: onSurfaceColor.withOpacity(0.1),
+        color: onSurfaceColor.withAlpha((0.1 * 255).round()),
         thickness: 1,
         space: 1,
       ),
@@ -232,16 +231,15 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      scaffoldBackgroundColor: Color(0xFF121212),
       
       colorScheme: const ColorScheme.dark(
         primary: accentCeleste,
         secondary: primaryCeleste,
         surface: Color(0xFF1A202C),
-        background: Color(0xFF121212),
         onPrimary: Color(0xFF1A202C),
         onSecondary: Colors.white,
         onSurface: Colors.white,
-        onBackground: Colors.white,
       ),
 
       fontFamily: 'Roboto',
@@ -328,7 +326,7 @@ class AppTheme {
     borderRadius: BorderRadius.circular(12),
     boxShadow: [
       BoxShadow(
-        color: onSurfaceColor.withOpacity(0.1),
+        color: onSurfaceColor.withAlpha((0.1 * 255).round()),
         blurRadius: 6,
         offset: const Offset(0, 2),
       ),

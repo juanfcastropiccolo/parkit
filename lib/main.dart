@@ -16,26 +16,26 @@ void main() async {
   try {
     // Load environment variables
     await dotenv.load(fileName: ".env");
-    print('Environment variables loaded successfully');
+    debugPrint('Environment variables loaded successfully');
     
     // Initialize Supabase
     await Supabase.initialize(
       url: SupabaseConfig.supabaseUrl,
       anonKey: SupabaseConfig.supabaseAnonKey,
     );
-    print('Supabase initialized successfully');
+    debugPrint('Supabase initialized successfully');
     
     // Initialize notification service
     await NotificationService().initialize();
-    print('Notification service initialized');
+    debugPrint('Notification service initialized');
     
     // Check if configuration is complete
     if (!SupabaseConfig.isConfigured) {
-      print('Warning: Missing configuration for: ${SupabaseConfig.missingConfig.join(', ')}');
+      debugPrint('Warning: Missing configuration for: ${SupabaseConfig.missingConfig.join(', ')}');
     }
     
   } catch (e) {
-    print('Error during initialization: $e');
+    debugPrint('Error during initialization: $e');
     // Continue anyway to show error in app
   }
   

@@ -49,7 +49,7 @@ class SensorService {
 
     try {
       // Suscribirse al acelerómetro
-      _accelerometerSubscription = accelerometerEvents.listen(
+      _accelerometerSubscription = accelerometerEventStream().listen(
         _onAccelerometerData,
         onError: (error) {
           debugPrint('Error en acelerómetro: $error');
@@ -57,7 +57,7 @@ class SensorService {
       );
 
       // Suscribirse al giroscopio
-      _gyroscopeSubscription = gyroscopeEvents.listen(
+      _gyroscopeSubscription = gyroscopeEventStream().listen(
         _onGyroscopeData,
         onError: (error) {
           debugPrint('Error en giroscopio: $error');
