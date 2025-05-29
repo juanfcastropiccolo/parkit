@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _initializeApp() async {
     // Wait for the splash animation duration
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
 
     if (!mounted) return;
 
@@ -88,6 +88,10 @@ class _SplashScreenState extends State<SplashScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(30),
+                    image: const DecorationImage(
+                      image: AssetImage('assets/images/logo_parkit.png'),
+                      fit: BoxFit.contain,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withAlpha((0.2 * 255).round()),
@@ -95,11 +99,6 @@ class _SplashScreenState extends State<SplashScreen> {
                         offset: const Offset(0, 10),
                       ),
                     ],
-                  ),
-                  child: const Icon(
-                    Icons.local_parking,
-                    size: 60,
-                    color: AppTheme.primaryCeleste,
                   ),
                 ),
               ),
