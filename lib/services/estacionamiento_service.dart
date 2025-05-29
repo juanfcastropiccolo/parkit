@@ -1,8 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/estacionamiento_model.dart';
 import '../models/auto_model.dart';
-import '../services/distance_matrix_service.dart';
-import '../services/geocoding_service.dart';
 
 class EstacionamientoService {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -153,70 +151,5 @@ class EstacionamientoService {
         .map((data) => data
             .map((item) => EstacionamientoModel.fromJson(item))
             .toList());
-  }
-
-  // Get lugares libres sorted by distance
-  Future<List<EstacionamientoModel>> getLugaresLibresByDistance({
-    required double userLat,
-    required double userLng,
-  }) async {
-    try {
-      final lugares = await getLugaresLibres();
-      final distanceService = DistanceMatrixService();
-      
-      return await distanceService.sortByDistance(
-        originLat: userLat,
-        originLng: userLng,
-        parkingSpots: lugares,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  // Get nearby lugares libres within radius
-  Future<List<EstacionamientoModel>> getNearbyLugaresLibres({
-    required double userLat,
-    required double userLng,
-    int radiusMeters = 2000,
-  }) async {
-    try {
-      final lugares = await getLugaresLibres();
-      final distanceService = DistanceMatrixService();
-      
-      return await distanceService.getNearbySpots(
-        originLat: userLat,
-        originLng: userLng,
-        allSpots: lugares,
-        maxDistanceMeters: radiusMeters,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  // Compartir lugar with address validation
-  Future<EstacionamientoModel> compartirLugarConDireccion({
-    required String direccion,
-    required AutoModel auto,
-  }) async {
-    try {
-      final geocodingService = GeocodingService();
-      final results = await geocodingService.geocodeAddress(direccion);
-      
-      if (results.isEmpty) {
-        throw Exception('No se encontró la dirección especificada');
-      }
-      
-      final location = results.first;
-      
-      return await compartirLugarOcupado(
-        lat: location.lat,
-        lng: location.lng,
-        auto: auto,
-      );
-    } catch (e) {
-      rethrow;
-    }
   }
 } 

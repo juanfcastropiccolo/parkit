@@ -10,8 +10,6 @@ import '../services/estacionamiento_service.dart';
 import '../services/location_service.dart';
 import '../services/sensor_service.dart';
 import '../services/notification_service.dart';
-import '../services/distance_matrix_service.dart';
-import '../services/geocoding_service.dart';
 
 class MapProvider with ChangeNotifier {
   final EstacionamientoService _estacionamientoService = EstacionamientoService();
@@ -46,10 +44,6 @@ class MapProvider with ChangeNotifier {
   EstacionamientoModel? get lugarOcupadoUsuario => _lugarOcupadoUsuario;
   bool get isTrackingParking => _isTrackingParking;
   bool get hasUserParkedCar => _lugarOcupadoUsuario != null;
-
-  // Map type control
-  MapType _mapType = MapType.normal;
-  MapType get mapType => _mapType;
 
   // Inicializar el mapa
   Future<void> initializeMap() async {
@@ -360,117 +354,5 @@ class MapProvider with ChangeNotifier {
     _estacionamientosSubscription?.cancel();
     _sensorService.stopMonitoring();
     super.dispose();
-  }
-
-  // Load lugares ordered by distance
-  Future<void> loadLugaresByDistance() async {
-    if (_currentPosition == null) {
-      await _getCurrentLocation();
-    }
-    
-    if (_currentPosition == null) return;
-
-    _setLoading(true);
-    try {
-      _lugaresLibres = await _estacionamientoService.getLugaresLibresByDistance(
-        userLat: _currentPosition!.latitude,
-        userLng: _currentPosition!.longitude,
-      );
-      _updateMarkers();
-      _setLoading(false);
-    } catch (e) {
-      _setError('Error al cargar lugares por distancia: $e');
-      _setLoading(false);
-    }
-  }
-
-  // Search for address and move map
-  Future<void> searchAndGoToAddress(String address) async {
-    _setLoading(true);
-    try {
-      final geocodingService = GeocodingService();
-      final results = await geocodingService.geocodeAddress(address);
-      
-      if (results.isNotEmpty) {
-        final location = results.first;
-        
-        // Move map to location
-        if (_mapController != null) {
-          await _mapController!.animateCamera(
-            CameraUpdate.newLatLngZoom(
-              LatLng(location.lat, location.lng),
-              15.0,
-            ),
-          );
-        }
-        
-        // Load nearby parking spots
-        _lugaresLibres = await _estacionamientoService.getNearbyLugaresLibres(
-          userLat: location.lat,
-          userLng: location.lng,
-        );
-        _updateMarkers();
-      } else {
-        _setError('No se encontró la dirección');
-      }
-      
-      _setLoading(false);
-    } catch (e) {
-      _setError('Error al buscar dirección: $e');
-      _setLoading(false);
-    }
-  }
-
-  // Get address for current position
-  Future<String?> getCurrentAddress() async {
-    if (_currentPosition == null) return null;
-    
-    try {
-      final geocodingService = GeocodingService();
-      final result = await geocodingService.reverseGeocode(
-        _currentPosition!.latitude,
-        _currentPosition!.longitude,
-      );
-      
-      return result?.formattedAddress;
-    } catch (e) {
-      debugPrint('Error getting current address: $e');
-      return null;
-    }
-  }
-
-  // Map type control
-  void changeMapType(MapType newType) {
-    _mapType = newType;
-    notifyListeners();
-  }
-
-  // Camera controls
-  Future<void> animateToPosition(double lat, double lng, {double zoom = 15.0}) async {
-    if (_mapController != null) {
-      await _mapController!.animateCamera(
-        CameraUpdate.newLatLngZoom(LatLng(lat, lng), zoom),
-      );
-    }
-  }
-
-  Future<void> zoomIn() async {
-    if (_mapController != null) {
-      await _mapController!.animateCamera(CameraUpdate.zoomIn());
-    }
-  }
-
-  Future<void> zoomOut() async {
-    if (_mapController != null) {
-      await _mapController!.animateCamera(CameraUpdate.zoomOut());
-    }
-  }
-
-  // Get current camera position
-  Future<CameraPosition?> getCurrentCameraPosition() async {
-    if (_mapController != null) {
-      return await _mapController!.getCamera();
-    }
-    return null;
   }
 } 

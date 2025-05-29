@@ -122,7 +122,7 @@ class LocationService {
   // Stream de cambios de ubicación
   Stream<Position> getLocationStream() {
     return Geolocator.getPositionStream(
-      desiredAccuracy: LocationAccuracy.high,
+      locationSettings: locationSettings,
     );
   }
 

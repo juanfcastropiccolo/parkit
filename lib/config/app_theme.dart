@@ -57,7 +57,7 @@ class AppTheme {
       ),
 
       // Floating Action Button Theme
-      floatingActionButtonTheme: const FloatingActionButtonTheme(
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: primaryCeleste,
         foregroundColor: Colors.white,
         elevation: 6,
@@ -152,7 +152,7 @@ class AppTheme {
       ),
 
       // Card Theme
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: surfaceColor,
         elevation: 2,
         shadowColor: onSurfaceColor.withOpacity(0.1),

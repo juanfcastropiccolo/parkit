@@ -12,17 +12,6 @@ class SupabaseConfig {
   static String get googleMapsApiKey => 
       dotenv.env['GOOGLE_MAPS_API_KEY'] ?? 'your-google-maps-api-key';
   
-  // Google APIs Configuration (can use same key or separate keys)
-  static String get googleGeocodingApiKey => 
-      dotenv.env['GOOGLE_GEOCODING_API_KEY'] ?? googleMapsApiKey;
-
-  static String get googleDistanceMatrixApiKey => 
-      dotenv.env['GOOGLE_DISTANCE_MATRIX_API_KEY'] ?? googleMapsApiKey;
-
-  // API Base URLs
-  static const String googleGeocodingBaseUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
-  static const String googleDistanceMatrixBaseUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json';
-  
   // App configuration
   static String get appName => 
       dotenv.env['APP_NAME'] ?? 'Parkit';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'config/app_theme.dart';
 import 'config/supabase_config.dart';
@@ -15,12 +14,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   try {
-    // Load environment variables with different path for web
-    if (kIsWeb) {
-      await dotenv.load(fileName: "assets/.env");
-    } else {
-      await dotenv.load(fileName: ".env");
-    }
+    // Load environment variables
+    await dotenv.load(fileName: ".env");
     print('Environment variables loaded successfully');
     
     // Initialize Supabase
@@ -47,17 +42,31 @@ void main() async {
   runApp(const ParkitApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ParkitApp extends StatelessWidget {
+  const ParkitApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => MapProvider()),
+      ],
+      child: MaterialApp(
+        title: SupabaseConfig.appName,
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        home: const SplashScreen(),
+        // TODO: Add routes when we create more screens
+        // routes: {
+        //   '/login': (context) => const LoginScreen(),
+        //   '/register': (context) => const RegisterScreen(),
+        //   '/map': (context) => const MapScreen(),
+        //   '/profile': (context) => const ProfileScreen(),
+        // },
       ),
-      home: const MapScreen(),
     );
   }
-} 
+}
