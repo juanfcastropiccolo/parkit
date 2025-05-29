@@ -1,0 +1,190 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:animate_do/animate_do.dart';
+
+import '../config/app_theme.dart';
+import '../config/supabase_config.dart';
+import '../providers/auth_provider.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    // Wait for the splash animation
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    // Check configuration
+    if (!SupabaseConfig.isConfigured) {
+      _showConfigurationError();
+      return;
+    }
+
+    // TODO: Navigate to appropriate screen based on auth state
+    // For now, just show a placeholder message
+    _showPlaceholderMessage();
+  }
+
+  void _showConfigurationError() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Configuración Incompleta'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Faltan las siguientes configuraciones en el archivo .env:'),
+            const SizedBox(height: 16),
+            ...SupabaseConfig.missingConfig.map(
+              (config) => Text('• $config', style: const TextStyle(fontFamily: 'monospace')),
+            ),
+            const SizedBox(height: 16),
+            const Text('Por favor, configura estos valores en el archivo .env'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _initializeApp(); // Retry
+            },
+            child: const Text('Reintentar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPlaceholderMessage() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('¡Bienvenido a Parkit!'),
+        content: const Text(
+          'La aplicación se ha inicializado correctamente.\n\n'
+          'Las pantallas de UI están en desarrollo. '
+          'Todos los servicios backend están listos.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Continuar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: AppTheme.gradientDecoration,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo animado
+              FadeInDown(
+                duration: const Duration(milliseconds: 1000),
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.local_parking,
+                    size: 60,
+                    color: AppTheme.primaryCeleste,
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 30),
+              
+              // Título de la app
+              FadeInUp(
+                duration: const Duration(milliseconds: 1000),
+                delay: const Duration(milliseconds: 300),
+                child: const Text(
+                  'Parkit',
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // Subtítulo
+              FadeInUp(
+                duration: const Duration(milliseconds: 1000),
+                delay: const Duration(milliseconds: 600),
+                child: const Text(
+                  'Estacionamiento Compartido',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 60),
+              
+              // Indicador de carga
+              FadeInUp(
+                duration: const Duration(milliseconds: 1000),
+                delay: const Duration(milliseconds: 900),
+                child: const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              ),
+              
+              const SizedBox(height: 20),
+              
+              // Texto de carga
+              FadeInUp(
+                duration: const Duration(milliseconds: 1000),
+                delay: const Duration(milliseconds: 1200),
+                child: const Text(
+                  'Inicializando...',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+} 
