@@ -50,3 +50,6 @@ app.*.map.json
 .env.production
 .env.development
 .env
+
+# info.plist
+ios/Runner/Info.plist

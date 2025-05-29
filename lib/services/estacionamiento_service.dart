@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/estacionamiento_model.dart';
 import '../models/auto_model.dart';
+import '../config/supabase_config.dart';
 
 class EstacionamientoService {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -9,7 +10,7 @@ class EstacionamientoService {
   Future<List<EstacionamientoModel>> getLugaresLibres() async {
     try {
       final response = await _supabase
-          .from('estacionamientos')
+          .from(SupabaseConfig.estacionamientosTable)
           .select()
           .eq('status', 'libre')
           .order('timestamp', ascending: false);
@@ -26,7 +27,7 @@ class EstacionamientoService {
   Future<List<EstacionamientoModel>> getLugaresLibresParaAuto(AutoModel auto) async {
     try {
       final response = await _supabase
-          .from('estacionamientos')
+          .from(SupabaseConfig.estacionamientosTable)
           .select()
           .eq('status', 'libre')
           .gte('largo_cm', auto.largoCm + 10) // Margen de seguridad
@@ -62,7 +63,7 @@ class EstacionamientoService {
       };
 
       final response = await _supabase
-          .from('estacionamientos')
+          .from(SupabaseConfig.estacionamientosTable)
           .insert(data)
           .select()
           .single();
@@ -77,7 +78,7 @@ class EstacionamientoService {
   Future<void> marcarLugarComoLibre(String estacionamientoId) async {
     try {
       await _supabase
-          .from('estacionamientos')
+          .from(SupabaseConfig.estacionamientosTable)
           .update({
             'status': 'libre',
             'timestamp': DateTime.now().toIso8601String(),
@@ -95,7 +96,7 @@ class EstacionamientoService {
       if (userId == null) return null;
 
       final response = await _supabase
-          .from('estacionamientos')
+          .from(SupabaseConfig.estacionamientosTable)
           .select()
           .eq('user_id', userId)
           .eq('status', 'ocupado')
@@ -115,7 +116,7 @@ class EstacionamientoService {
       if (userId == null) throw Exception('Usuario no autenticado');
 
       await _supabase
-          .from('estacionamientos')
+          .from(SupabaseConfig.estacionamientosTable)
           .update({
             'status': 'ocupado',
             'user_id': userId,
@@ -133,7 +134,7 @@ class EstacionamientoService {
       final fechaLimite = DateTime.now().subtract(Duration(hours: horasAntiguas));
       
       await _supabase
-          .from('estacionamientos')
+          .from(SupabaseConfig.estacionamientosTable)
           .delete()
           .eq('status', 'libre')
           .lt('timestamp', fechaLimite.toIso8601String());
@@ -145,7 +146,7 @@ class EstacionamientoService {
   // Stream en tiempo real de cambios en estacionamientos
   Stream<List<EstacionamientoModel>> get lugaresLibresStream {
     return _supabase
-        .from('estacionamientos')
+        .from(SupabaseConfig.estacionamientosTable)
         .stream(primaryKey: ['id'])
         .eq('status', 'libre')
         .map((data) => data

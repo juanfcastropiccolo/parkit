@@ -3,7 +3,7 @@ import 'package:animate_do/animate_do.dart';
 
 import '../config/app_theme.dart';
 import '../config/supabase_config.dart';
-import 'placeholder_screen.dart';
+import 'map_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,20 +20,21 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _initializeApp() async {
-    // Wait for the splash animation
+    // Wait for the splash animation duration
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
 
-    // Check configuration
+    // Ensure Supabase and Google Maps configuration
     if (!SupabaseConfig.isConfigured) {
       _showConfigurationError();
       return;
     }
 
-    // TODO: Navigate to appropriate screen based on auth state
-    // For now, just show a placeholder message
-    _showPlaceholderMessage();
+    // Navigate to the main map screen
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const MapScreen()),
+    );
   }
 
   void _showConfigurationError() {
@@ -68,33 +69,6 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void _showPlaceholderMessage() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text('¡Bienvenido a Parkit!'),
-        content: const Text(
-          'La aplicación se ha inicializado correctamente.\n\n'
-          'Las pantallas de UI están en desarrollo. '
-          'Todos los servicios backend están listos.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => const PlaceholderScreen(),
-                ),
-              );
-            },
-            child: const Text('Continuar'),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 duration: const Duration(milliseconds: 1000),
                 delay: const Duration(milliseconds: 300),
                 child: const Text(
-                  'Parkit',
+                  'parkit',
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,

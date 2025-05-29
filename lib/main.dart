@@ -40,18 +40,8 @@ void main() async {
     // Continue anyway to show error in app
   }
   
-  // Suppress verbose animate_do prints and start the app in a custom zone
-  runZonedGuarded(
-    () => runApp(const ParkitApp()),
-    (error, stack) => debugPrint('Unhandled error: $error'),
-    zoneSpecification: ZoneSpecification(
-      print: (self, parent, zone, message) {
-        if (!message.toString().startsWith('animate:')) {
-          parent.print(zone, message);
-        }
-      },
-    ),
-  );
+  // Start the app
+  runApp(const ParkitApp());
 }
 
 class ParkitApp extends StatelessWidget {

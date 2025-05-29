@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/auto_model.dart';
+import '../config/supabase_config.dart';
 
 class AutoService {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -22,7 +23,7 @@ class AutoService {
       };
 
       final response = await _supabase
-          .from('autos')
+          .from(SupabaseConfig.autosTable)
           .insert(data)
           .select()
           .single();
@@ -37,7 +38,7 @@ class AutoService {
   Future<AutoModel?> getAutoPorId(String autoId) async {
     try {
       final response = await _supabase
-          .from('autos')
+          .from(SupabaseConfig.autosTable)
           .select()
           .eq('id', autoId)
           .maybeSingle();
@@ -57,7 +58,7 @@ class AutoService {
 
       // Primero obtener el auto_id del usuario
       final userResponse = await _supabase
-          .from('users')
+          .from(SupabaseConfig.usersTable)
           .select('auto_id')
           .eq('id', userId)
           .maybeSingle();
@@ -68,7 +69,7 @@ class AutoService {
 
       // Luego obtener los datos del auto
       final autoResponse = await _supabase
-          .from('autos')
+          .from(SupabaseConfig.autosTable)
           .select()
           .eq('id', userResponse['auto_id'])
           .maybeSingle();
@@ -84,7 +85,7 @@ class AutoService {
   Future<AutoModel> actualizarAuto(AutoModel auto) async {
     try {
       final response = await _supabase
-          .from('autos')
+          .from(SupabaseConfig.autosTable)
           .update(auto.toJson())
           .eq('id', auto.id)
           .select()
@@ -103,7 +104,7 @@ class AutoService {
       if (userId == null) throw Exception('Usuario no autenticado');
 
       await _supabase
-          .from('users')
+          .from(SupabaseConfig.usersTable)
           .update({'auto_id': autoId})
           .eq('id', userId);
     } catch (e) {
@@ -115,7 +116,7 @@ class AutoService {
   Future<void> eliminarAuto(String autoId) async {
     try {
       await _supabase
-          .from('autos')
+          .from(SupabaseConfig.autosTable)
           .delete()
           .eq('id', autoId);
     } catch (e) {

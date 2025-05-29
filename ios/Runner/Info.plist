@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>com.example.parkitApp</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -45,11 +45,22 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+  <!-- Enable iOS platform views for Flutter maps -->
+  <key>io.flutter.embedded_views_preview</key>
+  <true/>
   	<key>NSLocalNetworkUsageDescription</key>
   	<string>Allows debugging connections to the local network for Flutter tools.</string>
   	<key>NSBonjourServices</key>
   	<array>
   	  <string>_dartobservatory._tcp</string>
   	</array>
+  <!-- Permissions for location access required by the app -->
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>Parkit necesita acceder a tu ubicación para mostrar lugares de estacionamiento cercanos.</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>Parkit necesita tu ubicación en segundo plano para rastrear tu auto cuando te estacionas.</string>
+  <!-- Google Maps API key: replace with your actual key -->
+  <key>GOOGLE_MAPS_API_KEY</key>
+  <string>AIzaSyAADvijYy8VorBxL-PhgJJfuQynJvTmBaA</string>
 </dict>
 </plist>

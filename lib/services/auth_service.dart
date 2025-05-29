@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/user_model.dart';
+import '../config/supabase_config.dart';
 
 class AuthService {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -67,7 +68,7 @@ class AuthService {
       if (!isAuthenticated) return null;
       
       final response = await _supabase
-          .from('users')
+          .from(SupabaseConfig.usersTable)
           .select()
           .eq('id', currentUser!.id)
           .single();
@@ -82,7 +83,7 @@ class AuthService {
   Future<void> updateUserProfile(UserModel user) async {
     try {
       await _supabase
-          .from('users')
+          .from(SupabaseConfig.usersTable)
           .update(user.toJson())
           .eq('id', user.id);
     } catch (e) {
@@ -100,7 +101,7 @@ class AuthService {
       );
       
       await _supabase
-          .from('users')
+          .from(SupabaseConfig.usersTable)
           .insert(userModel.toJson());
     } catch (e) {
       // Si el usuario ya existe, no hacer nada
