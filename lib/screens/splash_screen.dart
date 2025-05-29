@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config/app_theme.dart';
 import '../config/supabase_config.dart';
 import 'map_screen.dart';
+import 'onboarding_screen.dart';
+import 'auth_options_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -31,7 +35,24 @@ class _SplashScreenState extends State<SplashScreen> {
       return;
     }
 
-    // Navigate to the main map screen
+    // Decide next screen: onboarding, auth or main map
+    final prefs = await SharedPreferences.getInstance();
+    final onboarded = prefs.getBool('onboarding_done') ?? false;
+    if (!onboarded) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+      );
+      return;
+    }
+    // Check authentication state
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const AuthOptionsScreen()),
+      );
+      return;
+    }
+    // Navigate to main map screen
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const MapScreen()),
     );
