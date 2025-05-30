@@ -5,6 +5,7 @@ class AutoModel {
   final int? anio;
   final int largoCm;
   final int anchoCm;
+  final int? altoCm;
 
   AutoModel({
     required this.id,
@@ -13,6 +14,7 @@ class AutoModel {
     this.anio,
     required this.largoCm,
     required this.anchoCm,
+    this.altoCm,
   });
 
   factory AutoModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class AutoModel {
       anio: json['anio'],
       largoCm: json['largo_cm'] ?? 0,
       anchoCm: json['ancho_cm'] ?? 0,
+      altoCm: json['alto_cm'],
     );
   }
 
@@ -34,6 +37,7 @@ class AutoModel {
       'anio': anio,
       'largo_cm': largoCm,
       'ancho_cm': anchoCm,
+      'alto_cm': altoCm,
     };
   }
 
@@ -44,6 +48,7 @@ class AutoModel {
     int? anio,
     int? largoCm,
     int? anchoCm,
+    int? altoCm,
   }) {
     return AutoModel(
       id: id ?? this.id,
@@ -52,6 +57,7 @@ class AutoModel {
       anio: anio ?? this.anio,
       largoCm: largoCm ?? this.largoCm,
       anchoCm: anchoCm ?? this.anchoCm,
+      altoCm: altoCm ?? this.altoCm,
     );
   }
 

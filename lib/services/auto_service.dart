@@ -12,6 +12,7 @@ class AutoService {
     int? anio,
     required int largoCm,
     required int anchoCm,
+    int? altoCm,
   }) async {
     try {
       final data = {
@@ -20,6 +21,7 @@ class AutoService {
         'anio': anio,
         'largo_cm': largoCm,
         'ancho_cm': anchoCm,
+        'alto_cm': altoCm,
       };
 
       final response = await _supabase
@@ -48,6 +50,16 @@ class AutoService {
     } catch (e) {
       return null;
     }
+  }
+  
+  // Asignar auto creado al usuario actual (update users.auto_id)
+  Future<void> asignarAutoAUsuario(String autoId) async {
+    final user = _supabase.auth.currentUser;
+    if (user == null) return;
+    await _supabase
+        .from(SupabaseConfig.usersTable)
+        .update({'auto_id': autoId})
+        .eq('id', user.id);
   }
 
   // Obtener auto del usuario actual
@@ -97,20 +109,6 @@ class AutoService {
     }
   }
 
-  // Asignar auto al usuario
-  Future<void> asignarAutoAUsuario(String autoId) async {
-    try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) throw Exception('Usuario no autenticado');
-
-      await _supabase
-          .from(SupabaseConfig.usersTable)
-          .update({'auto_id': autoId})
-          .eq('id', userId);
-    } catch (e) {
-      rethrow;
-    }
-  }
 
   // Eliminar auto
   Future<void> eliminarAuto(String autoId) async {

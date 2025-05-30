@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
-import 'map_screen.dart';
+import 'vehicle_setup_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -64,9 +64,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         SnackBar(content: Text(authProv.error ?? 'Error')),
                       );
                     } else {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (_) => const MapScreen()),
-                        (route) => false,
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => const VehicleSetupScreen(),
+                        ),
                       );
                     }
                   },
