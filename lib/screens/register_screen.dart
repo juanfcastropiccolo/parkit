@@ -64,6 +64,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         SnackBar(content: Text(authProv.error ?? 'Error')),
                       );
                     } else {
+                      // After signup, ensure the user is signed in so we have a session
+                      await authProv.signIn(
+                        email: _email,
+                        password: _password,
+                      );
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (_) => const VehicleSetupScreen(),

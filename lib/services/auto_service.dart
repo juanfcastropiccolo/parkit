@@ -56,10 +56,20 @@ class AutoService {
   Future<void> asignarAutoAUsuario(String autoId) async {
     final user = _supabase.auth.currentUser;
     if (user == null) return;
+    // Upsert profile record to ensure auto_id is set
     await _supabase
         .from(SupabaseConfig.usersTable)
-        .update({'auto_id': autoId})
-        .eq('id', user.id);
+        .upsert(
+          {
+            'id': user.id,
+            'email': user.email,
+            'nombre': user.userMetadata?['nombre'],
+            'auto_id': autoId,
+          },
+          onConflict: 'id',
+        )
+        .select()
+        .single();
   }
 
   // Obtener auto del usuario actual
