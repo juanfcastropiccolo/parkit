@@ -1,32 +1,34 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/auto_model.dart';
+import '../models/auto_model.dart'; // Ensure this path is correct
 import '../config/supabase_config.dart';
 
 class AutoService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  // Crear nuevo auto
-  Future<AutoModel> crearAuto({
-    required String marca,
-    required String modelo,
-    int? anio,
-    required int largoCm,
-    required int anchoCm,
-    int? altoCm,
-  }) async {
+  // Get all cars for a user
+  Future<List<AutoModel>> getMyCars(String userId) async {
     try {
-      final data = {
-        'marca': marca,
-        'modelo': modelo,
-        'anio': anio,
-        'largo_cm': largoCm,
-        'ancho_cm': anchoCm,
-        'alto_cm': altoCm,
-      };
-
       final response = await _supabase
           .from(SupabaseConfig.autosTable)
-          .insert(data)
+          .select()
+          .eq('user_id', userId); // Assuming 'user_id' is the column name in Supabase
+
+      if (response is List) {
+        return response.map((item) => AutoModel.fromJson(item as Map<String, dynamic>)).toList();
+      }
+      return []; // Should not happen if response is a list, but as a fallback
+    } catch (e) {
+      print('AutoService.getMyCars error: $e');
+      rethrow;
+    }
+  }
+
+  // Add new car
+  Future<AutoModel> addCar(AutoModel newAuto) async {
+    try {
+      final response = await _supabase
+          .from(SupabaseConfig.autosTable)
+          .insert(newAuto.toJson()) // toJson() now has correct field names like 'make', 'model', 'user_id', 'plate', 'length_cm', 'width_cm'
           .select()
           .single();
 
@@ -104,12 +106,12 @@ class AutoService {
   }
 
   // Actualizar auto
-  Future<AutoModel> actualizarAuto(AutoModel auto) async {
+  Future<AutoModel> updateCar(AutoModel updatedAuto) async {
     try {
       final response = await _supabase
           .from(SupabaseConfig.autosTable)
-          .update(auto.toJson())
-          .eq('id', auto.id)
+          .update(updatedAuto.toJson())
+          .eq('id', updatedAuto.id)
           .select()
           .single();
 
@@ -121,7 +123,7 @@ class AutoService {
 
 
   // Eliminar auto
-  Future<void> eliminarAuto(String autoId) async {
+  Future<void> deleteCar(String autoId) async {
     try {
       await _supabase
           .from(SupabaseConfig.autosTable)

@@ -3,12 +3,14 @@ class UserModel {
   final String email;
   final String? nombre;
   final String? autoId;
+  final String? telefono;
 
   UserModel({
     required this.id,
     required this.email,
     this.nombre,
     this.autoId,
+    this.telefono,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class UserModel {
       email: json['email'] ?? '',
       nombre: json['nombre'],
       autoId: json['auto_id'],
+      telefono: json['telefono'] as String?,
     );
   }
 
@@ -26,6 +29,7 @@ class UserModel {
       'email': email,
       'nombre': nombre,
       'auto_id': autoId,
+      'telefono': telefono,
     };
   }
 
@@ -34,12 +38,14 @@ class UserModel {
     String? email,
     String? nombre,
     String? autoId,
+    String? telefono,
   }) {
     return UserModel(
       id: id ?? this.id,
       email: email ?? this.email,
       nombre: nombre ?? this.nombre,
       autoId: autoId ?? this.autoId,
+      telefono: telefono ?? this.telefono,
     );
   }
 } 

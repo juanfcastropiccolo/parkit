@@ -1,71 +1,83 @@
 class AutoModel {
   final String id;
-  final String marca;
-  final String modelo;
+  final String make;
+  final String model;
   final int? anio;
-  final int largoCm;
-  final int anchoCm;
+  final int lengthCm;
+  final int widthCm;
   final int? altoCm;
+  final String userId;
+  final String patente;
 
   AutoModel({
     required this.id,
-    required this.marca,
-    required this.modelo,
+    required this.make,
+    required this.model,
     this.anio,
-    required this.largoCm,
-    required this.anchoCm,
+    required this.lengthCm,
+    required this.widthCm,
     this.altoCm,
+    required this.userId,
+    required this.patente,
   });
 
   factory AutoModel.fromJson(Map<String, dynamic> json) {
     return AutoModel(
       id: json['id'] ?? '',
-      marca: json['marca'] ?? '',
-      modelo: json['modelo'] ?? '',
+      make: json['make'] ?? '',
+      model: json['model'] ?? '',
       anio: json['anio'],
-      largoCm: json['largo_cm'] ?? 0,
-      anchoCm: json['ancho_cm'] ?? 0,
+      lengthCm: json['length_cm'] ?? 0,
+      widthCm: json['width_cm'] ?? 0,
       altoCm: json['alto_cm'],
+      userId: json['user_id'] ?? '',
+      patente: json['plate'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'marca': marca,
-      'modelo': modelo,
+      'make': make,
+      'model': model,
       'anio': anio,
-      'largo_cm': largoCm,
-      'ancho_cm': anchoCm,
+      'length_cm': lengthCm,
+      'width_cm': widthCm,
       'alto_cm': altoCm,
+      'user_id': userId,
+      'plate': patente,
     };
   }
 
   AutoModel copyWith({
     String? id,
-    String? marca,
-    String? modelo,
+    String? make,
+    String? model,
     int? anio,
-    int? largoCm,
-    int? anchoCm,
+    int? lengthCm,
+    int? widthCm,
     int? altoCm,
+    String? userId,
+    String? patente,
   }) {
     return AutoModel(
       id: id ?? this.id,
-      marca: marca ?? this.marca,
-      modelo: modelo ?? this.modelo,
+      make: make ?? this.make,
+      model: model ?? this.model,
       anio: anio ?? this.anio,
-      largoCm: largoCm ?? this.largoCm,
-      anchoCm: anchoCm ?? this.anchoCm,
+      lengthCm: lengthCm ?? this.lengthCm,
+      widthCm: widthCm ?? this.widthCm,
       altoCm: altoCm ?? this.altoCm,
+      userId: userId ?? this.userId,
+      patente: patente ?? this.patente,
     );
   }
 
   // Método para verificar si un auto cabe en un espacio
   bool cabeEn(int largoEspacio, int anchoEspacio, {int margenCm = 10}) {
-    return largoCm <= (largoEspacio - margenCm) && 
-           anchoCm <= (anchoEspacio - margenCm);
+    return lengthCm <= (largoEspacio - margenCm) &&
+           widthCm <= (anchoEspacio - margenCm);
   }
 
-  String get dimensionesTexto => '${largoCm}cm x ${anchoCm}cm';
+  String get dimensionesTexto => '${lengthCm}cm x ${widthCm}cm';
 } 

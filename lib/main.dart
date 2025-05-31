@@ -9,6 +9,10 @@ import 'providers/auth_provider.dart';
 import 'providers/map_provider.dart';
 import 'services/notification_service.dart';
 import 'screens/splash_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/my_cars_screen.dart';
+import 'screens/terms_screen.dart';
+import 'screens/login_screen.dart'; // Assuming this exists
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,14 +63,14 @@ class ParkitApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
-        home: const SplashScreen(),
-        // TODO: Add routes when we create more screens
-        // routes: {
-        //   '/login': (context) => const LoginScreen(),
-        //   '/register': (context) => const RegisterScreen(),
-        //   '/map': (context) => const MapScreen(),
-        //   '/profile': (context) => const ProfileScreen(),
-        // },
+        home: const SplashScreen(), // Keep SplashScreen as home
+        routes: {
+          '/login': (context) => LoginScreen(),
+          '/profile': (context) => ProfileScreen(),
+          '/my_cars': (context) => MyCarsScreen(),
+          '/terms': (context) => TermsScreen(),
+          // '/map': (context) => MapScreen(), // MapScreen is usually navigated to after Splash/Login
+        },
       ),
     );
   }

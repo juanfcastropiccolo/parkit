@@ -61,6 +61,7 @@ dependencies:
   # Permissions
   permission_handler: ^11.0.1
   shared_preferences: ^2.0.15
+  flutter_markdown: ^0.7.1
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +89,7 @@ flutter:
   assets:
     - .env
     - assets/images/logo_parkit.png
+    - assets/texts/
   # App launcher icons (flutter_launcher_icons)
   # The plugin will generate native icons for Android and iOS using the provided image
 flutter_icons:

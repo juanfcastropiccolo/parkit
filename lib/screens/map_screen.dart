@@ -8,6 +8,7 @@ import '../services/auto_service.dart';
 import '../models/auto_model.dart';
 import '../models/estacionamiento_model.dart';
 import '../models/publicidad_model.dart';
+import '../widgets/user_menu_widget.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -104,7 +105,12 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('parkit')),
+      appBar: AppBar(
+        title: const Text('parkit'),
+        actions: const [
+          UserMenu(),
+        ],
+      ),
       body: Consumer<MapProvider>(builder: (context, prov, _) {
         if (prov.isLoading || _loadingAuto) {
           return const Center(child: CircularProgressIndicator());
