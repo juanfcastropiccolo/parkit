@@ -2,6 +2,23 @@
 
 A new Flutter project.
 
+## Setup
+
+Ensure Flutter and the Android SDK are installed. The Android SDK path must be
+configured via the `ANDROID_HOME` environment variable or the `sdk.dir` entry in
+`android/local.properties`.
+
+Example:
+
+```bash
+export ANDROID_HOME=$HOME/Android/Sdk
+# android/local.properties
+sdk.dir=$HOME/Android/Sdk
+```
+
+Refer to the [Flutter installation guide](https://docs.flutter.dev/get-started/install)
+for more details.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
