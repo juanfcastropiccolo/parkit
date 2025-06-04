@@ -15,11 +15,11 @@ class SensorService {
   Function()? _onMovementDetected;
   Function()? _onMovementStopped;
 
-  // Configuración de sensibilidad
-  static const double _movementThreshold = 2.0; // m/s²
-  static const double _gyroThreshold = 0.5; // rad/s
-  static const int _stabilityDuration = 3; // segundos para considerar parado
-  static const int _movementDuration = 2; // segundos para confirmar movimiento
+  // Configuración de sensibilidad (valores por defecto)
+  double _movementThreshold = 2.0; // m/s²
+  double _gyroThreshold = 0.5; // rad/s
+  int _stabilityDuration = 3; // segundos para considerar parado
+  int _movementDuration = 2; // segundos para confirmar movimiento
 
   // Variables de estado
   bool _isMonitoring = false;
@@ -36,6 +36,10 @@ class SensorService {
 
   bool get isMonitoring => _isMonitoring;
   bool get isMoving => _isMoving;
+  double get movementThreshold => _movementThreshold;
+  double get gyroThreshold => _gyroThreshold;
+  int get stabilityDuration => _stabilityDuration;
+  int get movementDuration => _movementDuration;
 
   // Iniciar monitoreo de sensores
   Future<void> startMonitoring({
@@ -173,15 +177,26 @@ class SensorService {
     }
   }
 
-  // Configurar sensibilidad personalizada
+  // Configurar sensibilidad personalizada. Cualquier parámetro nulo
+  // mantiene el valor actual.
   void configureSensitivity({
     double? movementThreshold,
     double? gyroThreshold,
     int? stabilityDuration,
     int? movementDuration,
   }) {
-    // Esta implementación usaría variables de instancia en lugar de constantes
-    // Para simplicidad, las constantes están hardcodeadas arriba
+    if (movementThreshold != null) {
+      _movementThreshold = movementThreshold;
+    }
+    if (gyroThreshold != null) {
+      _gyroThreshold = gyroThreshold;
+    }
+    if (stabilityDuration != null) {
+      _stabilityDuration = stabilityDuration;
+    }
+    if (movementDuration != null) {
+      _movementDuration = movementDuration;
+    }
     debugPrint('Sensibilidad configurada');
   }
 
