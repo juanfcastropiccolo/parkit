@@ -12,10 +12,20 @@ import '../services/sensor_service.dart';
 import '../services/notification_service.dart';
 
 class MapProvider with ChangeNotifier {
-  final EstacionamientoService _estacionamientoService = EstacionamientoService();
-  final LocationService _locationService = LocationService();
-  final SensorService _sensorService = SensorService();
-  final NotificationService _notificationService = NotificationService();
+  final EstacionamientoService _estacionamientoService;
+  final LocationService _locationService;
+  final SensorService _sensorService;
+  final NotificationService _notificationService;
+
+  MapProvider({
+    EstacionamientoService? estacionamientoService,
+    LocationService? locationService,
+    SensorService? sensorService,
+    NotificationService? notificationService,
+  })  : _estacionamientoService = estacionamientoService ?? EstacionamientoService(),
+        _locationService = locationService ?? LocationService(),
+        _sensorService = sensorService ?? SensorService(),
+        _notificationService = notificationService ?? NotificationService();
 
   // Estado del mapa
   GoogleMapController? _mapController;
@@ -136,6 +146,7 @@ class MapProvider with ChangeNotifier {
 
   // Configurar actualizaciones en tiempo real
   void _setupRealtimeUpdates() {
+    _estacionamientosSubscription?.cancel();
     _estacionamientosSubscription = _estacionamientoService
         .lugaresLibresStream
         .listen((lugares) {
