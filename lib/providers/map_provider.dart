@@ -100,9 +100,11 @@ class MapProvider with ChangeNotifier {
     }
   }
 
-  // Cargar lugares libres
+  // Cargar lugares libres recientes
   Future<void> _loadLugaresLibres() async {
     try {
+      await _estacionamientoService
+          .limpiarLugaresExpirados(const Duration(minutes: 15));
       _lugaresLibres = await _estacionamientoService.getLugaresLibres();
       _updateMarkers();
     } catch (e) {
@@ -137,7 +139,7 @@ class MapProvider with ChangeNotifier {
   // Configurar actualizaciones en tiempo real
   void _setupRealtimeUpdates() {
     _estacionamientosSubscription = _estacionamientoService
-        .lugaresLibresStream
+        .lugaresLibresStream()
         .listen((lugares) {
       _lugaresLibres = lugares;
       _updateMarkers();
@@ -319,7 +321,8 @@ class MapProvider with ChangeNotifier {
     _setLoading(true);
 
     try {
-      _lugaresLibres = await _estacionamientoService.getLugaresLibresParaAuto(auto);
+      _lugaresLibres = await _estacionamientoService
+          .getLugaresLibresParaAuto(auto);
       _updateMarkers();
       _setLoading(false);
     } catch (e) {

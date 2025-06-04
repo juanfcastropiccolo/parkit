@@ -144,13 +144,22 @@ class _MapScreenState extends State<MapScreen> {
         );
       }),
       floatingActionButton: Consumer<MapProvider>(
-        builder: (context, prov, _) => FloatingActionButton.extended(
-          onPressed: prov.hasUserParkedCar || _userAuto == null
-              ? null
-              : () => prov.compartirLugarOcupado(_userAuto!),
-          label: Text(prov.hasUserParkedCar ? 'En seguimiento' : 'Estacionarme'),
-          icon: const Icon(Icons.local_parking),
-        ),
+        builder: (context, prov, _) {
+          if (prov.hasUserParkedCar) {
+            return FloatingActionButton.extended(
+              onPressed: prov.isLoading ? null : () => prov.confirmarLugarLibre(),
+              label: const Text('Dejé un lugar libre'),
+              icon: const Icon(Icons.directions_car),
+            );
+          }
+          return FloatingActionButton.extended(
+            onPressed: _userAuto == null
+                ? null
+                : () => prov.compartirLugarOcupado(_userAuto!),
+            label: const Text('Estacioné'),
+            icon: const Icon(Icons.local_parking),
+          );
+        },
       ),
     );
   }
