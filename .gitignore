@@ -50,6 +50,7 @@ app.*.map.json
 .env.production
 .env.development
 .env
+/android/local.properties
 
 # info.plist
 ios/Runner/Info.plist
